@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect,useState } from "react";
 import { Copy, Package } from "lucide-react";
 import { toNumber,formatCurrency } from "../utils/formatters";
 import { COMPONENT_PRICE_EXCLUSIONS } from "../utils/constants";
@@ -6,6 +6,10 @@ import { COMPONENT_PRICE_EXCLUSIONS } from "../utils/constants";
 export const ProductCard = ({ product, onAddToCart, onOpenModal }) => {
   const [selectedOption, setSelectedOption] = useState(product.prices[0]);
   const [buttonText, setButtonText] = useState("Agregar");
+
+  useEffect(() => {
+    setSelectedOption(product.prices[0]);
+  }, [product]);
 
   const handleOptionChange = (e) => {
     const selectedValue = JSON.parse(e.target.value);

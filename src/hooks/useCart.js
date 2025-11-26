@@ -6,11 +6,10 @@ export const useCart = () => {
   const addToCart = (item) => {
     const itemPrice = item.price;
     
-    // 🛑 2. CAMBIO DE LÓGICA: Buscamos por el ID ÚNICO (nombre-presentación)
+    
     const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id);
 
     if (existingItemIndex > -1) {
-      // Artículo existente (misma presentación): incrementamos la cantidad
       setCart(prevCart => prevCart.map((cartItem, index) => 
         index === existingItemIndex
           ? { 
