@@ -7,7 +7,7 @@ export const Header = ({ searchQuery, onSearchChange }) => {
         <div className="flex flex-col items-center lg:flex-row lg:justify-start lg:gap-8">
           <img
             className="w-48 lg:w-96 mb-4 lg:mb-0"
-            src="../assets/LOGOTIPO AMARILLO.png"
+            src="/src/assets/LOGOTIPO AMARILLO.png"
             alt="Logotipo Steelguard Amarillo"
           />
 
