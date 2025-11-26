@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Copy, Package } from "lucide-react";
-import { formatCurrency } from "../utils/formatters";
+import { toNumber,formatCurrency } from "../utils/formatters";
 import { COMPONENT_PRICE_EXCLUSIONS } from "../utils/constants";
 
 export const ProductCard = ({ product, onAddToCart, onOpenModal }) => {
@@ -16,7 +16,7 @@ export const ProductCard = ({ product, onAddToCart, onOpenModal }) => {
     const itemToAdd = {
       id: `${product.name}-${selectedOption.presentation}`,
       name: product.name,
-      price: selectedOption.price,
+      price: toNumber(selectedOption.price),
       presentation: selectedOption.presentation,
     };
 

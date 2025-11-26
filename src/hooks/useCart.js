@@ -1,11 +1,10 @@
 import {useState} from "react";
-import { toNumber } from "../utils/formatters";
 
 export const useCart = () => {
   const [cart, setCart] = useState([]);
 
   const addToCart = (item) => {
-    const itemPrice = toNumber(item.price);
+    const itemPrice = item.price;
     
     // 🛑 2. CAMBIO DE LÓGICA: Buscamos por el ID ÚNICO (nombre-presentación)
     const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id);
