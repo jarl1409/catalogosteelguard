@@ -55,14 +55,14 @@ export const ProductCard = ({ product, onAddToCart, onOpenModal }) => {
     <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
       {/* Image */}
       <div
-        className="bg-gray-100 flex items-center justify-center p-4 h-40"
+        className="bg-gray-100 flex items-center justify-center p-4 h-80"
         onClick={() => onOpenModal && onOpenModal(product)}
       >
         {product.foto ? (
           <img
             src={product.foto}
             alt={product.name}
-            className="max-w-full max-h-full object-contain rounded-lg"
+            className="w-full h-full object-cover"
           />
         ) : (
           <Package className="w-16 h-16 text-gray-300" />
