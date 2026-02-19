@@ -1,6 +1,6 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { Copy, Package } from "lucide-react";
-import { toNumber,formatCurrency } from "../utils/formatters";
+import { toNumber, formatCurrency } from "../utils/formatters";
 import { COMPONENT_PRICE_EXCLUSIONS } from "../utils/constants";
 
 export const ProductCard = ({ product, onAddToCart, onOpenModal }) => {
@@ -34,7 +34,7 @@ export const ProductCard = ({ product, onAddToCart, onOpenModal }) => {
 
     // Si alguna de las palabras clave de la lista se encuentra en el nombre del producto, retorna true
     return COMPONENT_PRICE_EXCLUSIONS.some((keyword) =>
-      productNameLower.includes(keyword.toLowerCase())
+      productNameLower.includes(keyword.toLowerCase()),
     );
   };
 
@@ -80,17 +80,24 @@ export const ProductCard = ({ product, onAddToCart, onOpenModal }) => {
         </p>
 
         {/* Price Select */}
-        <select
-          value={JSON.stringify(selectedOption)}
-          onChange={handleOptionChange}
-          className="w-full p-2 border border-gray-300 rounded-lg mb-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-        >
-          {product.prices.map((option, index) => (
-            <option key={index} value={JSON.stringify(option)}>
-              {option.presentation}: {formatCurrency(option.price)}
-            </option>
-          ))}
-        </select>
+        {product.prices.length > 1 ? (
+          <select
+            value={JSON.stringify(selectedOption)}
+            onChange={handleOptionChange}
+            className="w-full p-2 border border-gray-300 rounded-lg mb-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+          >
+            {product.prices.map((option, index) => (
+              <option key={index} value={JSON.stringify(option)}>
+                {option.presentation}: {formatCurrency(option.price)}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <div className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg mb-3 text-sm font-medium text-gray-700">
+            {selectedOption.presentation}:{" "}
+            {formatCurrency(selectedOption.price)}
+          </div>
+        )}
         <div className="text-xs text-gray-500 space-y-1 mb-3 mt-1">
           {Number(selectedOption.completo) > 0 && !excluded && (
             <p className="flex justify-between">
