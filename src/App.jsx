@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useGoogleSheets } from "./hooks/useGoogleSheets";
 import { useCart } from "./hooks/useCart";
-import { LoadingScreen } from "./components/LoadingScreen";
 import { Header } from "./components/Header";
 import { ProductGrid } from "./components/ProductGrid";
 import { CartButton } from "./components/CartButton";
@@ -85,7 +84,6 @@ const App = () => {
     setIsProductDetailOpen(false);
   };
 
-  if (isLoading) return <LoadingScreen />;
 
   if (error) {
     return (
@@ -114,16 +112,19 @@ const App = () => {
         ) : (
           <ProductGrid
             products={filteredProducts}
+            isLoading={isLoading}
             onAddToCart={addToCart}
             onOpenModal={handleOpenProductDetailModal}
           />
         )}
       </div>
 
-      <CartButton
-        itemCount={cartItemCount}
-        onClick={() => setIsCartOpen(true)}
-      />
+      {!isLoading && (
+        <CartButton
+          itemCount={cartItemCount}
+          onClick={() => setIsCartOpen(true)}
+        />
+      )}
 
       <CartPanel
         isOpen={isCartOpen}
