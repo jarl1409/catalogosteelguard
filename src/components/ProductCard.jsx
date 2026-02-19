@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { Copy, Package } from "lucide-react";
+
+import { SelectionModal } from "./SelectionModal";
 import { toNumber, formatCurrency } from "../utils/formatters";
 import { COMPONENT_PRICE_EXCLUSIONS } from "../utils/constants";
 
 export const ProductCard = ({ product, onAddToCart, onOpenModal }) => {
   const [selectedOption, setSelectedOption] = useState(product.prices[0]);
   const [buttonText, setButtonText] = useState("Agregar");
+  const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
 
   useEffect(() => {
     setSelectedOption(product.prices[0]);
@@ -16,15 +19,41 @@ export const ProductCard = ({ product, onAddToCart, onOpenModal }) => {
     setSelectedOption(selectedValue);
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCartClick = () => {
+    // Si tiene catalizador o completo, abrimos el modal
+    const hasComplexOptions =
+      Number(selectedOption.soloCatalizador) > 0 ||
+      Number(selectedOption.completo) > 0;
+
+    if (hasComplexOptions) {
+      setIsSelectionModalOpen(true);
+    } else {
+      confirmAddition("base");
+    }
+  };
+
+  const confirmAddition = (tipo) => {
+    let nameSuffix = "";
+    let finalPrice = selectedOption.price;
+
+    if (tipo === "catalizador") {
+      nameSuffix = ` + ${selectedOption.nomCat || "Cat."}`;
+      finalPrice = selectedOption.soloCatalizador;
+    } else if (tipo === "completo") {
+      nameSuffix = " (KIT COMPLETO)";
+      finalPrice = selectedOption.completo;
+    }
+
     const itemToAdd = {
-      id: `${product.name}-${selectedOption.presentation}`,
-      name: product.name,
-      price: toNumber(selectedOption.price),
+      id: `${product.name}-${selectedOption.presentation}-${tipo}`,
+      name: `${product.name}${nameSuffix}`,
+      price: Number(finalPrice),
       presentation: selectedOption.presentation,
+      extraInfo: tipo === "completo" ? selectedOption.proporcion : null,
     };
 
     onAddToCart(itemToAdd);
+    setIsSelectionModalOpen(false);
     setButtonText("✓ Añadido");
     setTimeout(() => setButtonText("Agregar"), 800);
   };
@@ -131,7 +160,7 @@ export const ProductCard = ({ product, onAddToCart, onOpenModal }) => {
         {/* Buttons */}
         <div className="flex gap-2">
           <button
-            onClick={handleAddToCart}
+            onClick={handleAddToCartClick}
             className="flex-1 bg-gradient-to-r from-green-400 to-green-500 text-white py-2 rounded-lg hover:from-green-500 hover:to-green-600 transition font-semibold text-sm"
           >
             {buttonText}
@@ -143,6 +172,13 @@ export const ProductCard = ({ product, onAddToCart, onOpenModal }) => {
             <Copy className="w-4 h-4" />
           </button>
         </div>
+        <SelectionModal
+          isOpen={isSelectionModalOpen}
+          onClose={() => setIsSelectionModalOpen(false)}
+          product={product}
+          selectedOption={selectedOption}
+          onConfirm={confirmAddition}
+        />
 
         {/* Link */}
         {product.link && (

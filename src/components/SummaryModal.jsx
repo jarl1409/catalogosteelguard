@@ -8,13 +8,14 @@ export const SummaryModal = ({ isOpen, onClose, cart, cartTotal }) => {
       return;
     }
 
-    let text = "🧾 Resumen del pedido:\n";
+    let text = "🧾 *RESUMEN DEL PEDIDO - STEELGUARD*\n\n";
     cart.forEach((item) => {
-      text += `- ${item.name} (${item.presentation}) x${
-        item.qty
-      } — ${formatCurrency(item.price * item.qty)}\n`;
+      text += `* ${item.name} (${item.presentation})\n`;
+      // Agregamos esto:
+      if (item.extraInfo) text += `   _Mezcla: ${item.extraInfo}_\n`;
+      text += `   Cant: ${item.qty} — ${formatCurrency(item.price * item.qty)}\n\n`;
     });
-    text += `TOTAL: ${formatCurrency(cartTotal)}`;
+    text += `*TOTAL: ${formatCurrency(cartTotal)}*`;
 
     try {
       await navigator.clipboard.writeText(text);
@@ -56,7 +57,17 @@ export const SummaryModal = ({ isOpen, onClose, cart, cartTotal }) => {
               ) : (
                 cart.map((item, index) => (
                   <tr key={index} className="border-b">
-                    <td className="py-2">{item.name}</td>
+                    <td className="py-2">
+                      <div className="font-medium text-gray-800">
+                        {item.name}
+                      </div>
+                      {/* Agregamos el detalle visual aquí */}
+                      {item.extraInfo && (
+                        <div className="text-[10px] text-blue-500 font-bold uppercase leading-tight">
+                          {item.extraInfo}
+                        </div>
+                      )}
+                    </td>
                     <td className="text-center py-2">{item.qty}</td>
                     <td className="text-right py-2">
                       {formatCurrency(item.price * item.qty)}

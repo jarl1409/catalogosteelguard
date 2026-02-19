@@ -27,10 +27,10 @@ export const useGoogleSheets = () => {
           .toString()
           .trim()
           .replace(/\s+/g, " ")
-          .toLowerCase()
+          .toLowerCase(),
       );
       const rows = response.table.rows.map((r) =>
-        r.c.map((c) => (c ? c.v : ""))
+        r.c.map((c) => (c ? c.v : "")),
       );
 
       const rawData = rows
@@ -53,6 +53,9 @@ export const useGoogleSheets = () => {
             audios: obj["audios"] || "",
             video: obj["video"] || "",
             pvd: obj["pvd"] || "",
+            nomCat: obj["nombre catalizador"] || "",
+            nomDis: obj["nombre disolvente"] || "",
+            proporcion: obj["relacion mezcla"] || "",
           };
         })
         .filter((p) => p.name);
@@ -92,6 +95,9 @@ export const useGoogleSheets = () => {
           completo: item.completo,
           soloCatalizador: item.soloCatalizador,
           soloDisolvente: item.soloDisolvente,
+          nomCat: item.nomCat,
+          nomDis: item.nomDis,
+          proporcion: item.proporcion,
         });
 
         return acc;
@@ -107,7 +113,7 @@ export const useGoogleSheets = () => {
 
     const script = document.createElement("script");
     script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(
-      SHEET_NAME
+      SHEET_NAME,
     )}&tqx=out:json`;
     script.onerror = () => {
       setError("No se pudo cargar Google Sheets");
