@@ -127,7 +127,16 @@ export const ProductCard = ({ product, onAddToCart, onOpenModal }) => {
             {formatCurrency(selectedOption.price)}
           </div>
         )}
+
         <div className="text-xs text-gray-500 space-y-1 mb-3 mt-1">
+          {Number(selectedOption.priceAlmacen) > 0 && (
+            <p className="flex justify-between">
+              <span className="font-medium">Precio Almacén (Unidad):</span>
+              <span className="font-semibold text-blue-600">
+                {formatCurrency(selectedOption.priceAlmacen)}
+              </span>
+            </p>
+          )}
           {Number(selectedOption.completo) > 0 && !excluded && (
             <p className="flex justify-between">
               <span className="font-medium">Completo:</span>
